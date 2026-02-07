@@ -88,7 +88,6 @@ function getAdvancerRowIndexHandler(sheet, input) {
 //---------------------------------------------------------------------------------------------
 
 function addToTimeSheet(formUsed, key, form) {
-  const SPREADSHEET_ID = "1ED6YGSMKbjoLU7mOaoX5dQNSPvYK5-uGFbsJl2T31_E";
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
   const timeSheet = ss.getSheetByName("Time_Sheet");
   

@@ -1,82 +1,4 @@
-const MAIN_SHEET_MAP = {
-  "SERIAL NUMBER": 1,
-  "INVOICE DATE": 2,
-  "PURCHASED INVOICE NUMBER": 3,
-  "CURRENT COUNTER": 4,
-  "KEY NUMBER": 5,
-  "ENGINE NUMBER": 6,
-  "CHASSIS NUMBER": 7,
-  "MODEL": 8,
-  "COLOR": 9,
-  "STOCK STATUS": 10,
-  "SALE DATE": 11,
-  "SALE INVOICE NUMBER": 12,
-  "SALE COUNTER": 13,
-  "CUSTOMER NAME": 14,
-  "MOBILE NUMBER": 15,
-  "ALTERNATE MOBILE NUMBER": 16,
-  "CASH / FINANCE": 17,
-  "FINANCER": 18,
-  "SALES PERSON": 19,
-  "ADVANCER NAME": 20,
-  "TOTAL DP": 21,
-  "ADVANCE AMOUNT": 22,
-  "RECEIVED DP": 23,
-  // "TOTAL RECEIVED": 24,
-  // "DUE": 25,
-  "ANY EXCHANGE": 26,
-  "EXCHANGE MODEL": 27,
-  "EXCHANGE REGISTER NUMBER": 28,
-  "CUSTOMER EXCHANGE VALUE": 29,
-  "DEALER EXCHANGE VALUE": 30,
-  "DEALER NAME": 31,
-  "DUE DATE": 32,
-  "EMI": 33,
-  "TENURE": 34,
-  "DATE OF BIRTH": 35,
-  "AGREEMENT NUMBER": 36,
-  "GROSS VALUE BEFORE DISCOUNT": 37,
-  // "TRADE DISCOUNT": 38,
-  // "TAXABLE VALUE AFTER DISCOUNT": 39,
-  // "GST (18%)": 40,
-  // "INVOICE VALUE AFTER GST AFTER DISCOUNT": 41,
-  // "CUSTOMER INVOICE VALUE": 42,
-  "INSURANCE AMOUNT": 43,
-  "RTO AMOUNT": 44,
-  "ESTIMATED DISBURSEMENT": 45,
-  "DISBURSEMENT DATE": 46,
-  "DISBURSEMENT AMOUNT": 47,
-  "DISBURSEMENT ACCOUNT": 48,
-  "PRICE TAG NUMBER": 49,
-  "REGISTRATION NUMBER": 50,
-  // "ALL CHARGES": 51
-};
-
-const ADVANCE_SHEET_MAP = {
-  "ADVANCE DATE": 1,
-  "ADVANCER NAME": 2,
-  "MOBILE NUMBER": 3,
-  "ALTERNATE MOBILE NUMBER": 4,
-  "AMOUNT": 5,
-  "COUNTER": 6,
-  "RECEIVER NAME": 7,
-  "MODEL": 8,
-  "COLOR": 9,
-  "REMARK": 10,
-  "STATUS": 11,
-  "ADVANCE RETURN": 12,
-  "RETURN PERSON": 13
-}
-
-const TIME_SHEET_MAP = {
-  "DATE": 1,
-  "TIME": 2,
-  "FORM USED": 3,
-  "CHASSIS / ADVANCER": 4
-}
-
 function form_1_1() {
-  const SPREADSHEET_ID = "1ED6YGSMKbjoLU7mOaoX5dQNSPvYK5-uGFbsJl2T31_E";
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
   const inputForm = ss.getSheetByName("Input_Form");
   const mainSheet = ss.getSheetByName("Main_Sheet");
@@ -117,7 +39,6 @@ function form_1_1() {
 //------------------------------------------------------------------------------------------------------------------
 
 function form_1_2() {
-  const SPREADSHEET_ID = "1ED6YGSMKbjoLU7mOaoX5dQNSPvYK5-uGFbsJl2T31_E";
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
   const inputForm = ss.getSheetByName("Input_Form");
   const mainSheet = ss.getSheetByName("Main_Sheet");
@@ -157,7 +78,6 @@ function form_1_2() {
 //------------------------------------------------------------------------------------------------------------------
 
 function form_1_3() {
-  const SPREADSHEET_ID = "1ED6YGSMKbjoLU7mOaoX5dQNSPvYK5-uGFbsJl2T31_E";
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
   const inputForm = ss.getSheetByName("Input_Form");
   const mainSheet = ss.getSheetByName("Main_Sheet");
@@ -192,7 +112,6 @@ function form_1_3() {
 //------------------------------------------------------------------------------------------------------------------
 
 function form_2_1() {
-  const SPREADSHEET_ID = "1ED6YGSMKbjoLU7mOaoX5dQNSPvYK5-uGFbsJl2T31_E";
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
   const inputForm = ss.getSheetByName("Input_Form");
   const advanceSheet = ss.getSheetByName("Advance_Sheet");
@@ -237,7 +156,6 @@ function form_2_1() {
 //------------------------------------------------------------------------------------------------------------------
 
 function form_2_2() {
-  const SPREADSHEET_ID = "1ED6YGSMKbjoLU7mOaoX5dQNSPvYK5-uGFbsJl2T31_E";
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
   const inputForm = ss.getSheetByName("Input_Form");
   const advanceSheet = ss.getSheetByName("Advance_Sheet");
@@ -272,7 +190,6 @@ function form_2_2() {
 //------------------------------------------------------------------------------------------------------------------
 
 function form_3_1() {
-  const SPREADSHEET_ID = "1ED6YGSMKbjoLU7mOaoX5dQNSPvYK5-uGFbsJl2T31_E";
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
   const inputForm = ss.getSheetByName("Input_Form");
   const mainSheet = ss.getSheetByName("Main_Sheet");
@@ -322,7 +239,6 @@ function form_3_1() {
 //------------------------------------------------------------------------------------------------------------------
 
 function form_3_2() {
-  const SPREADSHEET_ID = "1ED6YGSMKbjoLU7mOaoX5dQNSPvYK5-uGFbsJl2T31_E";
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
   const inputForm = ss.getSheetByName("Input_Form");
   const mainSheet = ss.getSheetByName("Main_Sheet");
@@ -390,7 +306,6 @@ function form_3_2() {
 //------------------------------------------------------------------------------------------------------------------
 
 function form_3_3() {
-  const SPREADSHEET_ID = "1ED6YGSMKbjoLU7mOaoX5dQNSPvYK5-uGFbsJl2T31_E";
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
   const inputForm = ss.getSheetByName("Input_Form");
   const mainSheet = ss.getSheetByName("Main_Sheet");
@@ -430,7 +345,6 @@ function form_3_3() {
 //------------------------------------------------------------------------------------------------------------------
 
 function form_3_4() {
-  const SPREADSHEET_ID = "1ED6YGSMKbjoLU7mOaoX5dQNSPvYK5-uGFbsJl2T31_E";
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
   const inputForm = ss.getSheetByName("Input_Form");
   const mainSheet = ss.getSheetByName("Main_Sheet");
@@ -465,7 +379,6 @@ function form_3_4() {
 //------------------------------------------------------------------------------------------------------------------
 
 function form_4_1() {
-  const SPREADSHEET_ID = "1ED6YGSMKbjoLU7mOaoX5dQNSPvYK5-uGFbsJl2T31_E";
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
   const inputForm = ss.getSheetByName("Input_Form");
   const mainSheet = ss.getSheetByName("Main_Sheet");
@@ -500,7 +413,6 @@ function form_4_1() {
 //------------------------------------------------------------------------------------------------------------------
 
 function form_4_2() {
-  const SPREADSHEET_ID = "1ED6YGSMKbjoLU7mOaoX5dQNSPvYK5-uGFbsJl2T31_E";
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
   const inputForm = ss.getSheetByName("Input_Form");
   const mainSheet = ss.getSheetByName("Main_Sheet");
@@ -535,7 +447,6 @@ function form_4_2() {
 //------------------------------------------------------------------------------------------------------------------
 
 function form_4_3() {
-  const SPREADSHEET_ID = "1ED6YGSMKbjoLU7mOaoX5dQNSPvYK5-uGFbsJl2T31_E";
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
   const inputForm = ss.getSheetByName("Input_Form");
   const mainSheet = ss.getSheetByName("Main_Sheet");
@@ -570,7 +481,6 @@ function form_4_3() {
 //------------------------------------------------------------------------------------------------------------------
 
 function form_4_4() {
-  const SPREADSHEET_ID = "1ED6YGSMKbjoLU7mOaoX5dQNSPvYK5-uGFbsJl2T31_E";
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
   const inputForm = ss.getSheetByName("Input_Form");
   const mainSheet = ss.getSheetByName("Main_Sheet");
