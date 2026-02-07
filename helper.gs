@@ -48,7 +48,8 @@ function getRowIndexHandler(sheet, input, column) {
   if (lastRow < 2) return -1;
   const data = sheet.getRange(2, column, lastRow - 1, 1).getValues();
   for (let i = 0; i < data.length; i++) {
-    if (data[i][0] === input) {
+    console.log(data[i][0],input);
+    if (data[i][0] == input) {
       return i + 2;
     }
   }
@@ -63,8 +64,8 @@ function isDuplicateAdvancerEntry(sheet, input) {
   const data = sheet.getRange(2, 2, lastRow - 1, 10).getValues();
   for (let i = 0; i < data.length; i++) {
     if (
-      String(data[i][0]).trim().toUpperCase() === input && 
-      String(data[i][9]).trim().toUpperCase() === "RECEIVED"
+      String(data[i][0]).trim().toUpperCase() == input && 
+      String(data[i][9]).trim().toUpperCase() == "RECEIVED"
     ) return true;
   }
   return false;
@@ -77,7 +78,7 @@ function getAdvancerRowIndexHandler(sheet, input) {
   if (lastRow < 2) return -1;
   const data = sheet.getRange(2, 2, lastRow - 1, 10).getValues();
   for (let i = 0; i < data.length; i++) {
-    if (data[i][0] === input && data[i][9] === "RECEIVED") {
+    if (data[i][0] == input && data[i][9] == "RECEIVED") {
       return i + 2;
     }
   }
@@ -85,3 +86,35 @@ function getAdvancerRowIndexHandler(sheet, input) {
 }
 
 //---------------------------------------------------------------------------------------------
+
+function addToTimeSheet(formUsed, key, form) {
+  const SPREADSHEET_ID = "1ED6YGSMKbjoLU7mOaoX5dQNSPvYK5-uGFbsJl2T31_E";
+  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  const timeSheet = ss.getSheetByName("Time_Sheet");
+  
+  if (!timeSheet) throw new Error("Time_Sheet not found");
+
+  const date = new Date(Date.now());
+  const currentDate = date.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }).split(",")[0];
+  const currentTime = date.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }).split(",")[1];
+    
+  const data = {
+    "DATE": currentDate.trim().toUpperCase(),
+    "TIME": currentTime.trim().toUpperCase(),
+    "FORM USED": formUsed.trim().toUpperCase(),
+    "CHASSIS / ADVANCER": key.toString().trim().toUpperCase()
+  };
+
+  const nextRow = getFirstEmptyRow(timeSheet, "A2:A");
+  safeWriteRow(timeSheet, nextRow, data, form);
+}
+
+//---------------------------------------------------------------------------------------------
+
+function safeWriteRow(sheet, rowIndex, dataObj, form) {
+  for (const key in dataObj) {
+    const col = form[key];
+    if (!col) continue;
+    sheet.getRange(rowIndex, col).setValue(dataObj[key]);
+  }
+}

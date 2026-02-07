@@ -1,3 +1,80 @@
+const MAIN_SHEET_MAP = {
+  "SERIAL NUMBER": 1,
+  "INVOICE DATE": 2,
+  "PURCHASED INVOICE NUMBER": 3,
+  "CURRENT COUNTER": 4,
+  "KEY NUMBER": 5,
+  "ENGINE NUMBER": 6,
+  "CHASSIS NUMBER": 7,
+  "MODEL": 8,
+  "COLOR": 9,
+  "STOCK STATUS": 10,
+  "SALE DATE": 11,
+  "SALE INVOICE NUMBER": 12,
+  "SALE COUNTER": 13,
+  "CUSTOMER NAME": 14,
+  "MOBILE NUMBER": 15,
+  "ALTERNATE MOBILE NUMBER": 16,
+  "CASH / FINANCE": 17,
+  "FINANCER": 18,
+  "SALES PERSON": 19,
+  "ADVANCER NAME": 20,
+  "TOTAL DP": 21,
+  "ADVANCE AMOUNT": 22,
+  "RECEIVED DP": 23,
+  // "TOTAL RECEIVED": 24,
+  // "DUE": 25,
+  "ANY EXCHANGE": 26,
+  "EXCHANGE MODEL": 27,
+  "EXCHANGE REGISTER NUMBER": 28,
+  "CUSTOMER EXCHANGE VALUE": 29,
+  "DEALER EXCHANGE VALUE": 30,
+  "DEALER NAME": 31,
+  "DUE DATE": 32,
+  "EMI": 33,
+  "TENURE": 34,
+  "DATE OF BIRTH": 35,
+  "AGREEMENT NUMBER": 36,
+  "GROSS VALUE BEFORE DISCOUNT": 37,
+  // "TRADE DISCOUNT": 38,
+  // "TAXABLE VALUE AFTER DISCOUNT": 39,
+  // "GST (18%)": 40,
+  // "INVOICE VALUE AFTER GST AFTER DISCOUNT": 41,
+  // "CUSTOMER INVOICE VALUE": 42,
+  "INSURANCE AMOUNT": 43,
+  "RTO AMOUNT": 44,
+  "ESTIMATED DISBURSEMENT": 45,
+  "DISBURSEMENT DATE": 46,
+  "DISBURSEMENT AMOUNT": 47,
+  "DISBURSEMENT ACCOUNT": 48,
+  "PRICE TAG NUMBER": 49,
+  "REGISTRATION NUMBER": 50,
+  // "ALL CHARGES": 51
+};
+
+const ADVANCE_SHEET_MAP = {
+  "ADVANCE DATE": 1,
+  "ADVANCER NAME": 2,
+  "MOBILE NUMBER": 3,
+  "ALTERNATE MOBILE NUMBER": 4,
+  "AMOUNT": 5,
+  "COUNTER": 6,
+  "RECEIVER NAME": 7,
+  "MODEL": 8,
+  "COLOR": 9,
+  "REMARK": 10,
+  "STATUS": 11,
+  "ADVANCE RETURN": 12,
+  "RETURN PERSON": 13
+}
+
+const TIME_SHEET_MAP = {
+  "DATE": 1,
+  "TIME": 2,
+  "FORM USED": 3,
+  "CHASSIS / ADVANCER": 4
+}
+
 function form_1_1() {
   const SPREADSHEET_ID = "1ED6YGSMKbjoLU7mOaoX5dQNSPvYK5-uGFbsJl2T31_E";
   const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
@@ -29,13 +106,12 @@ function form_1_1() {
   let inputData = inputForm.getRange("C5").getValue();
   data["KEY NUMBER"] = inputData ? inputData.toString().trim().toUpperCase() : "";
 
-  const headers = mainSheet.getRange(1, 1, 1, mainSheet.getLastColumn()).getValues()[0];
   const nextRow = getFirstEmptyRow(mainSheet, "A2:A");
-  const row = headers.map(h => data[h] ?? "");
-  mainSheet.getRange(nextRow, 1, 1, row.length).setValues([row]);
+  safeWriteRow(mainSheet, nextRow, data, MAIN_SHEET_MAP);
 
   inputForm.getRange("C3:C8").clearContent();
   setStatus(inputForm, "STOCK ADDED SUCCESSFULLY", "B9:C9", true);
+  addToTimeSheet("FORM-1.1",data["CHASSIS NUMBER"], TIME_SHEET_MAP);
 }
 
 //------------------------------------------------------------------------------------------------------------------
@@ -59,24 +135,23 @@ function form_1_2() {
     return;
   }
 
-  const rowIndex = getRowIndexHandler(mainSheet, chassis, 7);
-  if (rowIndex === -1) {
-    setStatus(inputForm, "CHASSIS DOES NOT EXIST", "E7:F7", false);
-    return;
-  }
-
   const data = {
     "INVOICE DATE": date,
     "PURCHASED INVOICE NUMBER": invoice,
     "GROSS VALUE BEFORE DISCOUNT": gvbd
   };
 
-  const headers = mainSheet.getRange(1, 1, 1, mainSheet.getLastColumn()).getValues()[0];
-  const row = headers.map(h => data[h] ?? mainSheet.getRange(rowIndex, headers.indexOf(h) + 1).getValue());
-  mainSheet.getRange(rowIndex, 1, 1, row.length).setValues([row]);
+  const rowIndex = getRowIndexHandler(mainSheet, chassis, 7);
+  console.log(rowIndex);
+  if (rowIndex === -1) {
+    setStatus(inputForm, "CHASSIS DOES NOT EXIST", "E7:F7", false);
+    return;
+  }
 
+  safeWriteRow(mainSheet, rowIndex, data, MAIN_SHEET_MAP);
   inputForm.getRange("F3:F6").clearContent();
   setStatus(inputForm, "INVOICE ADDED SUCCESSFULLY", "E7:F7", true);
+  addToTimeSheet("FORM-1.2",chassis, TIME_SHEET_MAP);
 }
 
 //------------------------------------------------------------------------------------------------------------------
@@ -98,22 +173,20 @@ function form_1_3() {
     return;
   }
 
+  const data = {
+    "CURRENT COUNTER": counter,
+  };
+
   const rowIndex = getRowIndexHandler(mainSheet, chassis, 7);
   if (rowIndex === -1) {
     setStatus(inputForm, "CHASSIS DOES NOT EXIST", "H5:I5", false);
     return;
   }
 
-  const data = {
-    "CURRENT COUNTER": counter,
-  };
-
-  const headers = mainSheet.getRange(1, 1, 1, mainSheet.getLastColumn()).getValues()[0];
-  const row = headers.map(h => data[h] ?? mainSheet.getRange(rowIndex, headers.indexOf(h) + 1).getValue());
-  mainSheet.getRange(rowIndex, 1, 1, row.length).setValues([row]);
-
+  safeWriteRow(mainSheet, rowIndex, data, MAIN_SHEET_MAP);
   inputForm.getRange("I3:I4").clearContent();
   setStatus(inputForm, "STOCK MOVED SUCCESSFULLY", "H5:I5", true);
+  addToTimeSheet("FORM-1.3",chassis, TIME_SHEET_MAP);
 }
 
 //------------------------------------------------------------------------------------------------------------------
@@ -154,13 +227,11 @@ function form_2_1() {
   inputData = inputForm.getRange("C22").getValue();
   data["REMARK"] = inputData ? inputData.toString().trim().toUpperCase() : "";
 
-  const headers = advanceSheet.getRange(1, 1, 1, advanceSheet.getLastColumn()).getValues()[0];
   const nextRow = getFirstEmptyRow(advanceSheet, "A2:A");
-  const row = headers.map(h => data[h] ?? "");
-  advanceSheet.getRange(nextRow, 1, 1, row.length).setValues([row]);
-
+  safeWriteRow(advanceSheet, nextRow, data, ADVANCE_SHEET_MAP);
   inputForm.getRange("C14:C22").clearContent();
   setStatus(inputForm, "ADVANCE PAYMENT ADDED SUCCESSFULLY", "B23:C23", true);
+  addToTimeSheet("FORM-2.1",data["ADVANCER NAME"], TIME_SHEET_MAP);
 }
 
 //------------------------------------------------------------------------------------------------------------------
@@ -192,12 +263,10 @@ function form_2_2() {
     return;
   }
 
-  const headers = advanceSheet.getRange(1, 1, 1, advanceSheet.getLastColumn()).getValues()[0];
-  const row = headers.map(h => data[h] ?? advanceSheet.getRange(rowIndex, headers.indexOf(h) + 1).getValue());
-  advanceSheet.getRange(rowIndex, 1, 1, row.length).setValues([row]);
-
+  safeWriteRow(advanceSheet, rowIndex, data, ADVANCE_SHEET_MAP);
   inputForm.getRange("F14:F16").clearContent();
   setStatus(inputForm, "ADVANCE RETURNED SUCCESSFULLY", "E17:F17", true);
+  addToTimeSheet("FORM-2.2",data["ADVANCER NAME"], TIME_SHEET_MAP);
 }
 
 //------------------------------------------------------------------------------------------------------------------
@@ -225,13 +294,16 @@ function form_3_1() {
     data["MOBILE NUMBER"] = inputForm.getRange("C35").getValue().toString().trim().toUpperCase();
     data["CASH / FINANCE"] = inputForm.getRange("C37").getValue().toString().trim().toUpperCase();
     data["FINANCER"] = inputForm.getRange("C38").getValue().toString().trim().toUpperCase();
-    let inputData = inputForm.getRange("C36").getValue();
-    data["ALTERNATE MOBILE NUMBER"] = inputData ? inputData.toString().trim().toUpperCase() : "";
   }
 
   if (Object.values(data).some(v => !v) || chassis === "") {
     setStatus(inputForm, "SOME FIELDS ARE MISSING","B40:C40",false);
     return;
+  }
+  
+  if (data["STOCK STATUS"] === "B2C") {
+    let inputData = inputForm.getRange("C36").getValue();
+    data["ALTERNATE MOBILE NUMBER"] = inputData ? inputData.toString().trim().toUpperCase() : "";
   }
 
   const rowIndex = getRowIndexHandler(mainSheet, chassis, 7);
@@ -240,13 +312,11 @@ function form_3_1() {
     return;
   }
 
-  const headers = mainSheet.getRange(1, 1, 1, mainSheet.getLastColumn()).getValues()[0];
-  const row = headers.map(h => data[h] ?? mainSheet.getRange(rowIndex, headers.indexOf(h) + 1).getValue());
-  mainSheet.getRange(rowIndex, 1, 1, row.length).setValues([row]);
-
+  safeWriteRow(mainSheet, rowIndex, data, MAIN_SHEET_MAP);
   inputForm.getRange("C28").clearContent();
   inputForm.getRange("C31:C39").clearContent();
   setStatus(inputForm, "SALE ADDED SUCCESSFULLY", "B40:C40", true);
+  addToTimeSheet("FORM-3.1",chassis, TIME_SHEET_MAP);
 }
 
 //------------------------------------------------------------------------------------------------------------------
@@ -295,9 +365,7 @@ function form_3_2() {
     return;
   }
 
-  let headers = mainSheet.getRange(1, 1, 1, mainSheet.getLastColumn()).getValues()[0];
-  let row = headers.map(h => data[h] ?? mainSheet.getRange(rowIndex, headers.indexOf(h) + 1).getValue());
-  mainSheet.getRange(rowIndex, 1, 1, row.length).setValues([row]);
+  safeWriteRow(mainSheet, rowIndex, data, MAIN_SHEET_MAP);
 
   if (anyAdvance === "YES") {
     const advanceRowIndex = getAdvancerRowIndexHandler(advanceSheet, data["ADVANCER NAME"]);
@@ -308,9 +376,7 @@ function form_3_2() {
     const advanceData = {
       "STATUS": "PURCHASED"
     }
-    headers = advanceSheet.getRange(1, 1, 1, advanceSheet.getLastColumn()).getValues()[0];
-    row = headers.map(h => advanceData[h] ?? advanceSheet.getRange(advanceRowIndex, headers.indexOf(h) + 1).getValue());
-    advanceSheet.getRange(advanceRowIndex, 1, 1, row.length).setValues([row]);
+    safeWriteRow(advanceSheet, rowIndex, advanceData, ADVANCE_SHEET_MAP);
   }
 
   inputForm.getRange("F28").clearContent();
@@ -318,6 +384,7 @@ function form_3_2() {
   inputForm.getRange("F35").clearContent();
   inputForm.getRange("F37:F42").clearContent();
   setStatus(inputForm, "SALE ACCOUNT ADDED SUCCESSFULLY", "E43:F43", true);
+  addToTimeSheet("FORM-3.2",chassis, TIME_SHEET_MAP);
 }
 
 //------------------------------------------------------------------------------------------------------------------
@@ -353,13 +420,11 @@ function form_3_3() {
     return;
   }
 
-  const headers = mainSheet.getRange(1, 1, 1, mainSheet.getLastColumn()).getValues()[0];
-  const row = headers.map(h => data[h] ?? mainSheet.getRange(rowIndex, headers.indexOf(h) + 1).getValue());
-  mainSheet.getRange(rowIndex, 1, 1, row.length).setValues([row]);
-
+  safeWriteRow(mainSheet, rowIndex, data, MAIN_SHEET_MAP);
   inputForm.getRange("I28").clearContent();
   inputForm.getRange("I30:I35").clearContent();
   setStatus(inputForm, "SALE FINANCE ADDED SUCCESSFULLY", "H36:I36", true);
+  addToTimeSheet("FORM-3.3",chassis, TIME_SHEET_MAP);
 }
 
 //------------------------------------------------------------------------------------------------------------------
@@ -390,13 +455,11 @@ function form_3_4() {
     return;
   }
 
-  const headers = mainSheet.getRange(1, 1, 1, mainSheet.getLastColumn()).getValues()[0];
-  const row = headers.map(h => data[h] ?? mainSheet.getRange(rowIndex, headers.indexOf(h) + 1).getValue());
-  mainSheet.getRange(rowIndex, 1, 1, row.length).setValues([row]);
-
+  safeWriteRow(mainSheet, rowIndex, data, MAIN_SHEET_MAP);
   inputForm.getRange("L28").clearContent();
   inputForm.getRange("L30").clearContent();
   setStatus(inputForm, "SALE INVOICE ADDED SUCCESSFULLY", "K31:L31", true);
+  addToTimeSheet("FORM-3.4",chassis, TIME_SHEET_MAP);
 }
 
 //------------------------------------------------------------------------------------------------------------------
@@ -427,13 +490,11 @@ function form_4_1() {
     return;
   }
 
-  const headers = mainSheet.getRange(1, 1, 1, mainSheet.getLastColumn()).getValues()[0];
-  const row = headers.map(h => data[h] ?? mainSheet.getRange(rowIndex, headers.indexOf(h) + 1).getValue());
-  mainSheet.getRange(rowIndex, 1, 1, row.length).setValues([row]);
-
+  safeWriteRow(mainSheet, rowIndex, data, MAIN_SHEET_MAP);
   inputForm.getRange("C48").clearContent();
   inputForm.getRange("C50").clearContent();
   setStatus(inputForm, "INSURANCE AMOUNT ADDED SUCCESSFULLY", "B51:C51", true);
+  addToTimeSheet("FORM-4.1",chassis, TIME_SHEET_MAP);
 }
 
 //------------------------------------------------------------------------------------------------------------------
@@ -464,13 +525,11 @@ function form_4_2() {
     return;
   }
 
-  const headers = mainSheet.getRange(1, 1, 1, mainSheet.getLastColumn()).getValues()[0];
-  const row = headers.map(h => data[h] ?? mainSheet.getRange(rowIndex, headers.indexOf(h) + 1).getValue());
-  mainSheet.getRange(rowIndex, 1, 1, row.length).setValues([row]);
-
+  safeWriteRow(mainSheet, rowIndex, data, MAIN_SHEET_MAP);
   inputForm.getRange("F48").clearContent();
   inputForm.getRange("F50").clearContent();
   setStatus(inputForm, "RTO AMOUNT ADDED SUCCESSFULLY", "E51:F51", true);
+  addToTimeSheet("FORM-4.2",chassis, TIME_SHEET_MAP);
 }
 
 //------------------------------------------------------------------------------------------------------------------
@@ -501,13 +560,11 @@ function form_4_3() {
     return;
   }
 
-  const headers = mainSheet.getRange(1, 1, 1, mainSheet.getLastColumn()).getValues()[0];
-  const row = headers.map(h => data[h] ?? mainSheet.getRange(rowIndex, headers.indexOf(h) + 1).getValue());
-  mainSheet.getRange(rowIndex, 1, 1, row.length).setValues([row]);
-
+  safeWriteRow(mainSheet, rowIndex, data, MAIN_SHEET_MAP);
   inputForm.getRange("I48").clearContent();
   inputForm.getRange("I50").clearContent();
   setStatus(inputForm, "REGISTRATION NUMBER ADDED SUCCESSFULLY", "H51:I51", true);
+  addToTimeSheet("FORM-4.3",chassis, TIME_SHEET_MAP);
 }
 
 //------------------------------------------------------------------------------------------------------------------
@@ -540,11 +597,9 @@ function form_4_4() {
     return;
   }
 
-  const headers = mainSheet.getRange(1, 1, 1, mainSheet.getLastColumn()).getValues()[0];
-  const row = headers.map(h => data[h] ?? mainSheet.getRange(rowIndex, headers.indexOf(h) + 1).getValue());
-  mainSheet.getRange(rowIndex, 1, 1, row.length).setValues([row]);
-
+  safeWriteRow(mainSheet, rowIndex, data, MAIN_SHEET_MAP);
   inputForm.getRange("L48").clearContent();
   inputForm.getRange("L50:L52").clearContent();
   setStatus(inputForm, "DISBURSEMENT ADDED SUCCESSFULLY", "K53:L53", true);
+  addToTimeSheet("FORM-4.4",chassis, TIME_SHEET_MAP);
 }
