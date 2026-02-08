@@ -8,15 +8,6 @@ function setStatus(sheet, message, cell, category) {
 
 //---------------------------------------------------------------------------------------------
 
-function getSerialNumber(mainSheet) {
-  const lastRow = mainSheet.getLastRow();
-  if (lastRow < 2) return 1;
-  const lastValue = mainSheet.getRange(lastRow, 1).getValue();
-  return (Number(lastValue) || 0) + 1;
-}
-
-//---------------------------------------------------------------------------------------------
-
 function getFirstEmptyRow(sheet, columnRange) {
   const range = sheet.getRange(columnRange);
   const values = range.getValues();

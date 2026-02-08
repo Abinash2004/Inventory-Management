@@ -5,9 +5,11 @@ function form_1_1() {
   
   if (!inputForm) throw new Error("Input_Form not found");
   if (!mainSheet) throw new Error("Main_Sheet not found");
-    
+
+  const nextRow = getFirstEmptyRow(mainSheet, "A2:A");
+  
   const data = {
-    "SERIAL NUMBER": getSerialNumber(mainSheet),
+    "SERIAL NUMBER": nextRow - 1,
     "CHASSIS NUMBER": inputForm.getRange("C3").getValue().toString().trim().toUpperCase(),
     "ENGINE NUMBER": inputForm.getRange("C4").getValue().toString().trim().toUpperCase(),
     "MODEL": inputForm.getRange("C6").getValue().toString().trim().toUpperCase(),
@@ -28,7 +30,6 @@ function form_1_1() {
   let inputData = inputForm.getRange("C5").getValue();
   data["KEY NUMBER"] = inputData ? inputData.toString().trim().toUpperCase() : "";
 
-  const nextRow = getFirstEmptyRow(mainSheet, "A2:A");
   safeWriteRow(mainSheet, nextRow, data, MAIN_SHEET_MAP);
 
   inputForm.getRange("C3:C8").clearContent();
@@ -292,7 +293,7 @@ function form_3_2() {
     const advanceData = {
       "STATUS": "PURCHASED"
     }
-    safeWriteRow(advanceSheet, rowIndex, advanceData, ADVANCE_SHEET_MAP);
+    safeWriteRow(advanceSheet, advanceRowIndex, advanceData, ADVANCE_SHEET_MAP);
   }
 
   inputForm.getRange("F28").clearContent();
