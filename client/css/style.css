@@ -1,0 +1,641 @@
+/* Modern Minimal Inventory System Styling - Final Polish */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+    /* Enhanced Palette */
+    --primary-purple: #6c5ce7;
+    --primary-gradient: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+    --secondary-bg: #fdfdfd;
+    --bg-light: #f0f2f5;
+    --card-bg: #ffffff;
+    --text-primary: #2d3436;
+    --text-secondary: #636e72;
+    --border-color: #dfe6e9;
+    --focus-ring: rgba(108, 92, 231, 0.25);
+
+    /* Effects */
+    --shadow-soft: 0 10px 40px -10px rgba(0, 64, 128, 0.1);
+    --shadow-hover: 0 20px 60px -12px rgba(108, 92, 231, 0.2);
+    --glass-effect: rgba(255, 255, 255, 0.95);
+    --radius-md: 12px;
+    --radius-lg: 16px;
+
+    /* Transitions */
+    --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+    box-sizing: border-box;
+    transition: all 0.2s var(--ease-smooth);
+}
+
+body {
+    margin: 0;
+    font-family: 'Outfit', sans-serif;
+    background-color: var(--bg-light);
+    color: var(--text-primary);
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* ---------------- Sidebar Navigation ---------------- */
+#sidebar {
+    width: 280px;
+    background: var(--glass-effect);
+    backdrop-filter: blur(12px);
+    border-right: 1px solid rgba(255, 255, 255, 0.5);
+    display: flex;
+    flex-direction: column;
+    padding: 24px 16px;
+    box-shadow: 5px 0 25px rgba(0, 0, 0, 0.03);
+    z-index: 20;
+}
+
+#sidebar div {
+    padding: 12px 16px;
+    margin-bottom: 6px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-size: 16px;
+    /* Increased from 14px */
+    font-weight: 500;
+    color: var(--text-secondary);
+    border: 1px solid transparent;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Add subtle indicator dot */
+#sidebar div::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%) scale(0);
+    width: 4px;
+    height: 14px;
+    background: var(--primary-purple);
+    border-radius: 0 4px 4px 0;
+    transition: transform 0.3s var(--ease-bounce);
+}
+
+#sidebar div:hover {
+    background: rgba(108, 92, 231, 0.08);
+    color: var(--primary-purple);
+    padding-left: 20px;
+    border-color: rgba(108, 92, 231, 0.1);
+}
+
+#sidebar div:hover::before {
+    transform: translateY(-50%) scale(1);
+}
+
+
+/* ---------------- Main Content Area ---------------- */
+#main-content {
+    flex: 1;
+    overflow-y: overlay;
+    padding: 30px;
+    background-image: radial-gradient(circle at top right, rgba(108, 92, 231, 0.05) 0%, transparent 40%);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+/* Custom Scrollbar for a premium look */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+
+/* ---------------- Form Container ---------------- */
+#form-container {
+    width: 100%;
+    max-width: 600px;
+    background: var(--card-bg);
+    padding: 32px 40px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+    border: 1px solid white;
+    position: relative;
+    /* Slide in animation */
+    animation: slideUp 0.5s var(--ease-smooth) forwards;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+h3 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #2d3436;
+    margin: 0 0 24px 0;
+    padding-bottom: 12px;
+    border-bottom: 2px solid rgba(108, 92, 231, 0.1);
+    position: relative;
+    letter-spacing: 1px;
+}
+
+/* Decorative line under title */
+h3::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 60px;
+    height: 2px;
+    background: var(--primary-purple);
+    /* Solid purple */
+    border-radius: 2px;
+}
+
+
+/* ---------------- Single Column Layout ---------------- */
+form {
+    display: flex;
+    /* Changed from grid to flex column */
+    flex-direction: column;
+    /* gap: 2.5px; */
+    /* Reduced vertical gap from 20px */
+}
+
+/* Ensure all form elements take full width */
+form>div,
+form>button,
+h3,
+[id$="_response"] {
+    width: 100%;
+}
+
+form>div {
+    display: flex;
+    flex-direction: row;
+    /* Horizontal layout */
+    align-items: center;
+    /* Center vertically */
+    gap: 16px;
+    /* Space between label and input */
+    margin: 0;
+    position: relative;
+    padding: 2px 0;
+    /* Slight visual breathing room */
+}
+
+
+/* ---------------- Interactive Inputs ---------------- */
+label {
+    flex: 0 0 40%;
+    /* Fixed 40% width for labels */
+    font-size: 16px;
+    /* Increased from 14px */
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin: 0;
+    text-align: right;
+    /* Align text to right near the input */
+    line-height: 1.3;
+    letter-spacing: 0.3px;
+    transition: color 0.2s;
+}
+
+input,
+select {
+    flex: 1;
+    /* Allow input to take remaining space */
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 16px;
+    /* Increased from 14px */
+    font-family: inherit;
+    color: var(--text-primary);
+    background-color: #fdfdfd;
+    /* Explicit background color */
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.25s var(--ease-smooth);
+}
+
+/* Hover Effect on Inputs */
+input:hover,
+select:hover {
+    border-color: #b2bec3;
+    background-color: #fff;
+    /* Ensure bg is white on hover */
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+/* Focus State */
+input:focus,
+select:focus {
+    border-color: rgba(108, 92, 231, 0.5);
+    /* Semi-transparent border */
+    background-color: #fff;
+    /* Soft fade gradient glow */
+    box-shadow:
+        0 0 0 4px rgba(108, 92, 231, 0.1),
+        0 8px 25px rgba(108, 92, 231, 0.15);
+    transform: translateY(-2px);
+}
+
+/* Floating label effect color on focus */
+form>div:focus-within label {
+    color: var(--primary-purple);
+}
+
+/* 
+   FIX: Select Arrow Styling 
+   Only applying background image to select elements, not inputs.
+*/
+select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236c5ce7' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 14px;
+    padding-right: 36px;
+    appearance: none;
+    /* Remove default arrow */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+/* Ensure inputs don't get the arrow background */
+input {
+    background-image: none !important;
+}
+
+/* ---------------- Date Input Styling ---------------- */
+input[type="date"] {
+    position: relative;
+    padding-right: 10px;
+    /* Adjust padding for icon */
+    color-scheme: light;
+    /* Force light mode for standard picker */
+}
+
+/* Custom Calendar Icon for Webkit Browsers */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236c5ce7' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'%3E%3C/rect%3E%3Cline x1='16' y1='2' x2='16' y2='6'%3E%3C/line%3E%3Cline x1='8' y1='2' x2='8' y2='6'%3E%3C/line%3E%3Cline x1='3' y1='10' x2='21' y2='10'%3E%3C/line%3E%3C/svg%3E");
+    background-position: center;
+    background-size: 18px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+/* ---------------- Dropdown Options ---------------- */
+select option {
+    background-color: #ffffff;
+    color: var(--text-primary);
+    padding: 10px;
+    font-family: 'Outfit', sans-serif;
+    /* Contextual font match */
+    font-size: 16px;
+    /* Increased from 14px */
+    border-bottom: 1px solid var(--border-color);
+    /* Separator line if supported */
+}
+
+/* ---------------- Loading/Placeholder Option ---------------- */
+select option[value=""] {
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* ---------------- Readonly fields styling ---------------- */
+input[readonly] {
+    background-color: #f1f2f6;
+    border-color: transparent;
+    color: #636e72;
+    cursor: default;
+    font-weight: 500;
+}
+
+input[readonly]:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+
+/* ---------------- Buttons (SIMPLIFIED) ---------------- */
+button[type="submit"] {
+    margin-top: 24px;
+    padding: 14px;
+    background: var(--primary-purple);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    /* 12px */
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(108, 92, 231, 0.2);
+    transition: all 0.2s ease;
+    /* Simple ease transition */
+    width: 100%;
+}
+
+button[type="submit"]:hover {
+    background: #5b4cc4;
+    /* Slightly darker purple */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(108, 92, 231, 0.25);
+}
+
+button[type="submit"]:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(108, 92, 231, 0.2);
+}
+
+
+/* ---------------- Conditional Fields (Advance/Exchange) ---------------- */
+#advance_fields,
+#exchange_fields {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    background: rgba(108, 92, 231, 0.03);
+    border: 1px dashed rgba(108, 92, 231, 0.3);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    margin-top: 8px;
+    /* Animation */
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* ---------------- Response Message ---------------- */
+[id$="_response"] {
+    grid-column: span 2;
+    margin-top: 10px;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    display: none;
+    /* Default (Success) colors */
+    background: #e3fcef;
+    color: #00b894;
+    border: 1px solid #b8e9d6;
+}
+
+/* Success State (Explicit) */
+[id$="_response"].success {
+    background: #e3fcef;
+    color: #00b894;
+    border: 1px solid #b8e9d6;
+}
+
+/* Error State (Red Accent) */
+[id$="_response"].error {
+    background: #ffe5e5;
+    color: #d63031;
+    border: 1px solid #fab1a0;
+}
+
+/* Only show if it has text (CSS trick not fully reliable for text content but helps) */
+[id$="_response"]:not(:empty) {
+    display: block;
+    animation: popIn 0.3s var(--ease-bounce);
+}
+
+@keyframes popIn {
+    0% {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+#form-container p {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* ---------------- Auth Overlay ---------------- */
+#auth-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(15px);
+    /* Strong blur for privacy */
+    z-index: 10000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#auth-container {
+    background: white;
+    padding: 40px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-hover);
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+    border: 1px solid white;
+}
+
+#auth-container h2 {
+    margin: 0 0 20px 0;
+    color: var(--primary-purple);
+    font-size: 24px;
+}
+
+#auth-input {
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 14px;
+    text-align: center;
+    font-size: 18px;
+    letter-spacing: 4px;
+    /* Easier to see dots/chars */
+}
+
+#auth-error {
+    color: #d63031;
+    margin-top: 15px;
+    font-size: 14px;
+    min-height: 20px;
+}
+
+/* ---------------- Responsive Design ---------------- */
+
+/* Mobile Header (Hidden on Desktop) */
+#mobile-header {
+    display: none;
+    align-items: center;
+    padding: 16px;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 30;
+    height: 60px;
+}
+
+#menu-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-right: 16px;
+    padding: 4px;
+    color: var(--text-primary);
+}
+
+#mobile-header span {
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--primary-purple);
+}
+
+/* Tablet & Mobile Breakpoint (max-width: 900px) */
+@media screen and (max-width: 900px) {
+
+    body {
+        flex-direction: column;
+    }
+
+    /* Show Mobile Header */
+    #mobile-header {
+        display: flex;
+    }
+
+    /* Sidebar as Drawer */
+    #sidebar {
+        position: fixed;
+        left: -100%;
+        /* Hidden by default */
+        top: 60px;
+        /* Below header */
+        width: 100%;
+        /* Full width or partial? Let's do partial with overlay logic if we wanted, but full width is simpler for heavy nav */
+        height: calc(100% - 60px);
+        transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border-right: none;
+        z-index: 25;
+        background: rgba(255, 255, 255, 0.98);
+        /* Almost opaque */
+    }
+
+    #sidebar.active {
+        left: 0;
+        /* Slide in */
+    }
+
+    /* Main Content Adjustments */
+    #main-content {
+        padding: 80px 16px 30px;
+        /* Top padding clears the fixed header */
+        width: 100%;
+    }
+
+    #form-container {
+        padding: 24px 20px;
+        width: 100%;
+        max-width: 100%;
+        border-radius: var(--radius-md);
+    }
+}
+
+/* Mobile Specific (max-width: 600px) */
+@media screen and (max-width: 600px) {
+
+    /* Stack Form Elements Vertically */
+    form>div {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        /* Vertical gap between label and input */
+    }
+
+    /* Labels take full width and align left */
+    label {
+        flex: none;
+        width: 100%;
+        text-align: left;
+        margin-bottom: 2px;
+        font-size: 14px;
+        color: var(--primary-purple);
+        /* Highlight label slightly */
+    }
+
+    /* Inputs take full width */
+    input,
+    select {
+        width: 100%;
+    }
+
+    /* Adjust font sizes for readability */
+    input,
+    select,
+    button {
+        font-size: 16px;
+        /* Prevents iOS zoom on focus */
+    }
+
+    h3 {
+        font-size: 20px;
+    }
+
+    #auth-container {
+        width: 95%;
+        padding: 30px 20px;
+    }
+}

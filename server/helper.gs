@@ -1,0 +1,138 @@
+function getFirstEmptyRow(sheet, columnRange) {
+  const range = sheet.getRange(columnRange);
+  const values = range.getValues();
+  const startRow = range.getRow();
+  for (let i = 0; i < values.length; i++) {
+    if (!values[i][0]) return startRow + i;
+  }
+  return sheet.getLastRow() + 1;
+}
+
+//---------------------------------------------------------------------------------------------
+
+function isDuplicateEntry(sheet, input, column) {
+  const lastRow = sheet.getLastRow();
+  if (lastRow < 2) return false;
+  const data = sheet.getRange(2, column, lastRow - 1, 1).getValues();
+  for (let i = 0; i < data.length; i++) {
+    if (String(data[i][0]).trim().toUpperCase() === input) return true;
+  }
+  return false;
+}
+
+//---------------------------------------------------------------------------------------------
+
+function getRowIndexHandler(sheet, input, column) {
+  const lastRow = sheet.getLastRow();
+  if (lastRow < 2) return -1;
+  const data = sheet.getRange(2, column, lastRow - 1, 1).getValues();
+  for (let i = 0; i < data.length; i++) {
+    if (normalize(data[i][0]) === normalize(input)) {
+      return i + 2;
+    }
+  }
+  return -1;
+}
+
+//---------------------------------------------------------------------------------------------
+
+function isDuplicateAdvancerEntry(sheet, input) {
+  const lastRow = sheet.getLastRow();
+  if (lastRow < 2) return false;
+  
+  const statusIndex = ADVANCE_SHEET_MAP["STATUS"] - 2; 
+
+  const numCols = ADVANCE_SHEET_MAP["STATUS"] - 1; 
+  const data = sheet.getRange(2, 2, lastRow - 1, numCols).getValues();
+  
+  for (let i = 0; i < data.length; i++) {
+    if (
+      String(data[i][0]).trim().toUpperCase() == input && 
+      String(data[i][statusIndex]).trim().toUpperCase() == "RECEIVED"
+    ) return true;
+  }
+  return false;
+}
+
+//---------------------------------------------------------------------------------------------
+
+function getAdvancerRowIndexHandler(sheet, input) {
+  const lastRow = sheet.getLastRow();
+  if (lastRow < 2) return -1;
+
+  const statusIndex = ADVANCE_SHEET_MAP["STATUS"] - 2; 
+  const numCols = ADVANCE_SHEET_MAP["STATUS"] - 1;
+
+  const data = sheet.getRange(2, 2, lastRow - 1, numCols).getValues();
+  for (let i = 0; i < data.length; i++) {
+    if (
+      normalize(data[i][0]) === normalize(input) &&
+      normalize(data[i][statusIndex]) === "RECEIVED"
+    ) {
+      return i + 2;
+    }
+  }
+  return -1;
+}
+
+//---------------------------------------------------------------------------------------------
+
+function addToTimeSheet(formUsed, key, form) {
+  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  const timeSheet = ss.getSheetByName("time_sheet");
+  
+  if (!timeSheet) throw new Error("Time_Sheet not found");
+
+  const date = new Date(Date.now());
+  const currentDate = date.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }).split(",")[0];
+  const currentTime = date.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }).split(",")[1];
+    
+  const data = {
+    "DATE": currentDate.trim().toUpperCase(),
+    "TIME": currentTime.trim().toUpperCase(),
+    "FORM USED": formUsed.trim().toUpperCase(),
+    "CHASSIS / ADVANCER": key.toString().trim().toUpperCase()
+  };
+
+  const nextRow = getFirstEmptyRow(timeSheet, "A2:A");
+  safeWriteRow(timeSheet, nextRow, data, TIME_SHEET_MAP);
+}
+
+//---------------------------------------------------------------------------------------------
+
+function safeWriteRow(sheet, rowIndex, dataObj, map) {
+  const lastCol = sheet.getLastColumn();
+  
+  let maxCol = 0;
+  for (const key in map) {
+    if (map[key] > maxCol) maxCol = map[key];
+  }
+  
+  if (maxCol === 0) return;
+
+  const range = sheet.getRange(rowIndex, 1, 1, maxCol);
+  const values = range.getValues()[0];
+
+  for (const key in dataObj) {
+    const colIndex = map[key];
+    if (colIndex) {
+      values[colIndex - 1] = dataObj[key];
+    }
+  }
+  
+  range.setValues([values]);
+}
+
+//---------------------------------------------------------------------------------------------
+
+function normalize(v) {
+  return v ? v.toString().trim().toUpperCase() : "";
+}
+
+//---------------------------------------------------------------------------------------------
+
+function jsonResponse(obj) {
+  return ContentService
+    .createTextOutput(JSON.stringify(obj))
+    .setMimeType(ContentService.MimeType.JSON);
+}
