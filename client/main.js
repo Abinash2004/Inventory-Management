@@ -121,6 +121,15 @@ function initSidebar() {
         };
         sidebar.appendChild(link);
     });
+
+    // Add View Sheet Link
+    const sheetLink = document.createElement("div");
+    sheetLink.id = "view-sheet-btn";
+    sheetLink.textContent = "View Google Sheet";
+    sheetLink.onclick = () => {
+        window.open(CONFIG.SHEET_URL, '_blank');
+    };
+    sidebar.appendChild(sheetLink);
 }
 
 
