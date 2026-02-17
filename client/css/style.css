@@ -622,6 +622,150 @@ button[type="submit"]:active {
     }
 }
 
+/* ---------------- Tom Select Overrides ---------------- */
+/* Prevent default arrow on control itself */
+.ts-control::after {
+    display: none !important;
+}
+
+.ts-wrapper {
+    width: 100%;
+}
+
+.ts-control {
+    border-radius: 8px !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: none !important;
+    padding: 10px 40px 10px 14px !important;
+    /* Right padding for arrow */
+    font-size: 16px !important;
+    font-family: 'Outfit', sans-serif !important;
+    background-color: #fdfdfd !important;
+    background-image: none !important;
+    /* Remove any default gradient */
+    height: auto !important;
+    width: 100% !important;
+    display: flex !important;
+    align-items: center;
+    /* min-height: 44px; Removed to match input height strictly based on padding */
+    transition: all 0.25s var(--ease-smooth) !important;
+}
+
+/* Hover State (Match Input) */
+.ts-wrapper:hover .ts-control {
+    border-color: #b2bec3 !important;
+    background-color: #fff !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03) !important;
+    z-index: 5;
+    /* Ensure overlapping shadow shows */
+}
+
+.ts-control.focus {
+    border-color: rgba(108, 92, 231, 0.5) !important;
+    background-color: #fff !important;
+    box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.1), 0 8px 25px rgba(108, 92, 231, 0.15) !important;
+    transform: translateY(-2px);
+    z-index: 10;
+}
+
+/* Fix input position details */
+.ts-control input {
+    font-size: 16px !important;
+    color: var(--text-primary) !important;
+}
+
+/* Custom Dropdown Arrow */
+.ts-wrapper .ts-control::after {
+    content: '';
+    display: block !important;
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236c5ce7' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: contain;
+    pointer-events: none;
+}
+
+.ts-dropdown {
+    border-radius: 8px !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: var(--shadow-cool) !important;
+    margin-top: 5px !important;
+    z-index: 1000 !important;
+    /* Ensure it floats above other elements */
+}
+
+.ts-dropdown .option {
+    padding: 10px 14px !important;
+    font-size: 16px !important;
+    color: var(--text-primary) !important;
+}
+
+.ts-dropdown .active {
+    background-color: rgba(108, 92, 231, 0.1) !important;
+    color: var(--primary-purple) !important;
+}
+
+/* Custom placeholder color */
+.ts-control input::placeholder {
+    color: rgba(45, 52, 54, 0.4) !important;
+    /* Ghosted text */
+}
+
+.ts-control .item {
+    color: var(--text-primary) !important;
+}
+
+/* 
+   FIX: 
+   1. Overlap Input and Item on same axis.
+   2. Hide cursor initially when focused but not typing.
+*/
+.ts-control {
+    position: relative;
+}
+
+.ts-control .item {
+    position: absolute;
+    left: 14px;
+    /* Match padding */
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    /* Let clicks pass to input */
+    width: calc(100% - 60px);
+    /* Leave room for arrow/padding */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    z-index: 1;
+    /* Below input if input has background, but here we want parallel */
+}
+
+.ts-control input {
+    /* Input sits on top or mixed */
+    position: relative;
+    z-index: 2;
+    background: transparent !important;
+}
+
+/* Hide cursor when focused but NOT typing yet (to avoid blinking cursor below text) */
+.ts-wrapper.focus:not(.typing) .ts-control input {
+    caret-color: transparent;
+}
+
+/* Hide Item when typing starts (handled by JS toggling .typing class) */
+.ts-wrapper.typing .ts-control .item {
+    display: none !important;
+    opacity: 0;
+}
+
+
 /* Mobile Specific (max-width: 600px) */
 @media screen and (max-width: 600px) {
 
