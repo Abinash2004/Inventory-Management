@@ -623,6 +623,28 @@ button[type="submit"]:active {
 }
 
 /* ---------------- Tom Select Overrides ---------------- */
+
+/* 
+   FIX: Validation Message Positioning 
+   Force the underlying select to be technically "visible" (but transparent)
+   and positioned over the field so the browser validation bubble appears correctly.
+*/
+select.tomselected {
+    display: block !important;
+    opacity: 0 !important;
+    position: absolute !important;
+    left: auto !important;
+    right: 0 !important;
+    top: 0;
+    width: 20px !important;
+    /* Make it small and on the right */
+    height: 100% !important;
+    z-index: -1;
+    pointer-events: none;
+    clip: auto !important;
+    /* Ensure it's not clipped out of existence */
+}
+
 /* Prevent default arrow on control itself */
 .ts-control::after {
     display: none !important;
@@ -712,9 +734,9 @@ button[type="submit"]:active {
 }
 
 /* Custom placeholder color */
+/* Custom placeholder color */
 .ts-control input::placeholder {
-    color: rgba(45, 52, 54, 0.4) !important;
-    /* Ghosted text */
+    color: var(--text-secondary) !important;
 }
 
 .ts-control .item {

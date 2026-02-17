@@ -21,10 +21,14 @@ export async function loadDropdown(action, selectId, column) {
     // Clear select
     select.innerHTML = '';
 
+    // Add empty option required for Tom Select placeholder to work
+    const emptyOpt = document.createElement("option");
+    emptyOpt.value = "";
+    select.appendChild(emptyOpt);
+
     if (!res.data || !Array.isArray(res.data)) return;
 
-    // Add empty option for placeholder behavior if needed, but user said "dont show default values like select model"
-    // We will just add the data options.
+    // Add data options
     res.data.forEach(val => {
         const opt = document.createElement("option");
         opt.value = val;
@@ -34,7 +38,7 @@ export async function loadDropdown(action, selectId, column) {
 
     // Check if Tom Select is already initialized
     if (select.tomselect) {
-        select.tomselect.sync(); // Sync instead of destroy to keep it smooth if possible, or destroyre-init
+        select.tomselect.sync();
         select.tomselect.destroy();
     }
 
@@ -45,7 +49,7 @@ export async function loadDropdown(action, selectId, column) {
                 field: "text",
                 direction: "asc"
             },
-            placeholder: "",
+            placeholder: placeholderText, // Restore "Select [Label]"
             allowEmptyOption: true,
             maxOptions: null,
             onType: function (str) {
