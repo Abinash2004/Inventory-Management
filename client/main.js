@@ -12,6 +12,7 @@ import { render_form_4_2 } from './forms/form_4_2.js';
 import { render_form_4_3 } from './forms/form_4_3.js';
 import { render_form_4_4 } from './forms/form_4_4.js';
 import { CONFIG } from './utils/config.js';
+import { checkPassword } from './utils/api.js';
 
 const routes = {
     '1.1 - Inventory Stock Form': render_form_1_1,
@@ -57,16 +58,23 @@ function checkAuth() {
     const errorMsg = document.getElementById("auth-error");
 
     const handleLogin = () => {
-        if (input.value === CONFIG.AUTH_PASS) {
-            sessionStorage.setItem("auth_expiry", Date.now() + TTL);
-            document.body.removeChild(overlay);
-            initSidebar();
-        } else {
-            errorMsg.textContent = "Incorrect Password";
-            input.value = "";
-            input.classList.add("shake");
-            setTimeout(() => { errorMsg.textContent = ""; }, 2000);
-        }
+        checkPassword(input.value)
+            .then(res => {
+                if (res.status === 1) {
+                    sessionStorage.setItem("auth_expiry", Date.now() + TTL);
+                    document.body.removeChild(overlay);
+                    initSidebar();
+                } else {
+                    errorMsg.textContent = "Incorrect Password";
+                    input.value = "";
+                    input.classList.add("shake");
+                    setTimeout(() => { errorMsg.textContent = ""; }, 2000);
+                }
+            })
+            .catch(err => {
+                console.error("Login Error:", err);
+                errorMsg.textContent = "Error verifying password";
+            });
     };
 
     btn.onclick = handleLogin;

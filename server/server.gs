@@ -61,3 +61,11 @@ function doGet(e) {
     });
   }
 }
+
+function verify_password(password) {
+  if (password === AUTH_PASS) {
+    return { status: 1, message: "success" };
+  } else {
+    return { status: 0, message: "incorrect password" };
+  }
+}

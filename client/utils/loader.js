@@ -14,7 +14,7 @@ export const loader = {
         display: flex;
         justify-content: center;
         align-items: center;
-        z-index: 9999;
+        z-index: 20000;
       `;
       overlay.innerHTML = `
         <div class="spinner"></div>
