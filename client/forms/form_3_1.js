@@ -99,14 +99,14 @@ export function render_form_3_1() {
     <div id="form_3_1_response"></div>
   `;
 
-  
+
   loadDropdown("get_dropdown", "chassis", 8);
   loadDropdown("get_dropdown", "sale_counter", 3);
   loadDropdown("get_dropdown", "cash_or_finance", 5);
   loadDropdown("get_dropdown", "sales_person", 4);
 
 
-  
+
   const chassisSelect = document.getElementById("chassis");
 
   chassisSelect.addEventListener("change", async function () {
@@ -114,7 +114,7 @@ export function render_form_3_1() {
     const modelInput = document.getElementById("model");
     const colorInput = document.getElementById("color");
 
-    
+
     modelInput.value = "fetching...";
     colorInput.value = "fetching...";
 
@@ -141,7 +141,7 @@ export function render_form_3_1() {
   });
 
 
-  
+
 
   document
     .getElementById("form_3_1")
@@ -150,13 +150,13 @@ export function render_form_3_1() {
 
       const data = {
         chassis: document.getElementById("chassis").value,
-        
-        
-        
-        
-        
-        
-        stock_status: "B2C", 
+
+
+
+
+
+
+        stock_status: "B2C",
         sale_counter: document.getElementById("sale_counter").value,
         sale_date: document.getElementById("sale_date").value,
         customer_name: document.getElementById("customer_name").value,
@@ -168,7 +168,14 @@ export function render_form_3_1() {
       };
 
       const res = await postAction("form_3_1", data);
-      displayResponse("form_3_1_response", res); if(res.status === 1) document.getElementById("form_3_1").reset();
+      displayResponse("form_3_1_response", res);
+      if (res.status === 1) {
+        document.getElementById("form_3_1").reset();
+        loadDropdown("get_dropdown", "chassis", 8);
+        loadDropdown("get_dropdown", "sale_counter", 3);
+        loadDropdown("get_dropdown", "cash_or_finance", 5);
+        loadDropdown("get_dropdown", "sales_person", 4);
+      }
     });
 }
 

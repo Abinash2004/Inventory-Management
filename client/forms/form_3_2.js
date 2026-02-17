@@ -150,15 +150,10 @@ export function render_form_3_2() {
     <div id="form_3_2_response"></div>
   `;
 
-  
   loadDropdown("get_dropdown", "chassis", 11);
+  loadDropdown("get_dropdown", "advancer_name", 7);
+  loadDropdown("get_dropdown", "exchange_model", 1);
 
-  
-  loadDropdown("get_dropdown", "advancer_name", 20); 
-  loadDropdown("get_dropdown", "exchange_model", 1); 
-
-
-  
   const chassisSelect = document.getElementById("chassis");
   chassisSelect.addEventListener("change", async function () {
     const chassis = this.value;
@@ -184,7 +179,7 @@ export function render_form_3_2() {
   });
 
 
-  
+
   const anyAdvanceSelect = document.getElementById("any_advance");
   const advanceFields = document.getElementById("advance_fields");
   const advancerNameSelect = document.getElementById("advancer_name");
@@ -199,14 +194,14 @@ export function render_form_3_2() {
       advanceFields.style.display = "none";
       advancerNameSelect.removeAttribute("required");
       advanceAmountInput.removeAttribute("required");
-      
+
       advancerNameSelect.value = "";
       advanceAmountInput.value = "";
-      calculateDue(); 
+      calculateDue();
     }
   });
 
-  
+
   advancerNameSelect.addEventListener("change", async function () {
     const advancer = this.value;
     advanceAmountInput.value = "fetching...";
@@ -218,14 +213,14 @@ export function render_form_3_2() {
     }
 
     try {
-      
-      const url = new URL(CONFIG.WEB_APP_URL); 
-      
-      
-      
 
-      
-      const res = await getAdvanceDetails(advancer); 
+      const url = new URL(CONFIG.WEB_APP_URL);
+
+
+
+
+
+      const res = await getAdvanceDetails(advancer);
 
       if (res.status === 1 && res.data) {
         advanceAmountInput.value = res.data.amount || 0;
@@ -240,7 +235,7 @@ export function render_form_3_2() {
   });
 
 
-  
+
   const anyExchangeSelect = document.getElementById("any_exchange");
   const exchangeFields = document.getElementById("exchange_fields");
   const exchangeInputs = [
@@ -266,7 +261,7 @@ export function render_form_3_2() {
   });
 
 
-  
+
   const totalDpInput = document.getElementById("total_dp");
   const receivedDpInput = document.getElementById("received_dp");
   const dueOutput = document.getElementById("due_amount");
@@ -276,8 +271,8 @@ export function render_form_3_2() {
     const received = parseFloat(receivedDpInput.value) || 0;
     const advance = parseFloat(advanceAmountInput.value) || 0;
 
-    
-    
+
+
     const due = total - (received + advance);
     dueOutput.value = due;
   }
@@ -287,7 +282,7 @@ export function render_form_3_2() {
   });
 
 
-  
+
   document.getElementById("form_3_2").addEventListener("submit", async function (e) {
     e.preventDefault();
 
@@ -299,11 +294,11 @@ export function render_form_3_2() {
       received_dp: document.getElementById("received_dp").value,
       any_exchange: document.getElementById("any_exchange").value,
 
-      
+
       advancer_name: document.getElementById("advancer_name").value,
       advance_amount: document.getElementById("advance_amount").value,
 
-      
+
       exchange_model: document.getElementById("exchange_model").value,
       exchange_register_number: document.getElementById("exchange_register_number").value,
       customer_exchange_value: document.getElementById("customer_exchange_value").value,
@@ -312,7 +307,13 @@ export function render_form_3_2() {
     };
 
     const res = await postAction("form_3_2", data);
-    displayResponse("form_3_2_response", res); if(res.status === 1) document.getElementById("form_3_2").reset();
+    displayResponse("form_3_2_response", res);
+    if (res.status === 1) {
+      document.getElementById("form_3_2").reset();
+      loadDropdown("get_dropdown", "chassis", 11);
+      loadDropdown("get_dropdown", "advancer_name", 7);
+      loadDropdown("get_dropdown", "exchange_model", 1);
+    }
   });
 }
 

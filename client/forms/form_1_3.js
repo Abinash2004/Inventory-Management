@@ -31,15 +31,15 @@ export function render_form_1_3() {
     <div id="form_1_3_response"></div>
   `;
 
-  
 
-  
+
+
   loadDropdown("get_dropdown", "chassis", 8);
 
-  
+
   loadDropdown("get_dropdown", "counter", 3);
 
-  
+
 
   document
     .getElementById("form_1_3")
@@ -53,7 +53,12 @@ export function render_form_1_3() {
       };
 
       const res = await postAction("form_1_3", data);
-      displayResponse("form_1_3_response", res); if(res.status === 1) document.getElementById("form_1_3").reset();
+      displayResponse("form_1_3_response", res);
+      if (res.status === 1) {
+        document.getElementById("form_1_3").reset();
+        loadDropdown("get_dropdown", "chassis", 8);
+        loadDropdown("get_dropdown", "counter", 3);
+      }
     });
 }
 

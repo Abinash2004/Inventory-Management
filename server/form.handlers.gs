@@ -415,21 +415,11 @@ function form_3_3(data) {
 
   const chassis = normalize(data.chassis);
   const payload = {
-    "DUE DATE": data.due_date || "",
-    "EMI": normalize(data.emi),
-    "TENURE": normalize(data.tenure),
-    "DATE OF BIRTH": data.date_of_birth || "",
-    "AGREEMENT NUMBER": normalize(data.agreement_number),
     "ESTIMATED DISBURSEMENT": normalize(data.estimated_disbursement)
   };
 
   const requiredFields = [
     chassis,
-    payload["DUE DATE"],
-    payload["EMI"],
-    payload["TENURE"],
-    payload["DATE OF BIRTH"],
-    payload["AGREEMENT NUMBER"],
     payload["ESTIMATED DISBURSEMENT"]
   ];
 

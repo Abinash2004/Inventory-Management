@@ -39,12 +39,12 @@ export function render_form_2_2() {
     <div id="form_2_2_response"></div>
   `;
 
-  
+
   loadDropdown("get_dropdown", "advancer_name", 7);
   loadDropdown("get_dropdown", "return_person", 4);
 
 
-  
+
 
   document
     .getElementById("form_2_2")
@@ -58,7 +58,12 @@ export function render_form_2_2() {
       };
 
       const res = await postAction("form_2_2", data);
-      displayResponse("form_2_2_response", res); if(res.status === 1) document.getElementById("form_2_2").reset();
+      displayResponse("form_2_2_response", res);
+      if (res.status === 1) {
+        document.getElementById("form_2_2").reset();
+        loadDropdown("get_dropdown", "advancer_name", 7);
+        loadDropdown("get_dropdown", "return_person", 4);
+      }
     });
 }
 

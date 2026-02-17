@@ -1,4 +1,3 @@
-/* Modern Minimal Inventory System Styling - Final Polish */
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 
 :root {
@@ -42,7 +41,7 @@ body {
 
 /* ---------------- Sidebar Navigation ---------------- */
 #sidebar {
-    width: 280px;
+    width: 300px;
     background: var(--glass-effect);
     backdrop-filter: blur(12px);
     border-right: 1px solid rgba(255, 255, 255, 0.5);
@@ -83,6 +82,7 @@ body {
     transition: transform 0.3s var(--ease-bounce);
 }
 
+#sidebar div.active,
 #sidebar div:hover {
     background: rgba(108, 92, 231, 0.08);
     color: var(--primary-purple);
@@ -90,6 +90,7 @@ body {
     border-color: rgba(108, 92, 231, 0.1);
 }
 
+#sidebar div.active::before,
 #sidebar div:hover::before {
     transform: translateY(-50%) scale(1);
 }
@@ -189,7 +190,9 @@ h3,
     width: 100%;
 }
 
-form>div {
+form>div,
+#advance_fields>div,
+#exchange_fields>div {
     display: flex;
     flex-direction: row;
     /* Horizontal layout */
@@ -385,12 +388,8 @@ button[type="submit"]:active {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 20px;
-
-    background: rgba(108, 92, 231, 0.03);
-    border: 1px dashed rgba(108, 92, 231, 0.3);
-    border-radius: var(--radius-md);
-    padding: 24px;
+    gap: 10px;
+    /* Reduced gap */
     margin-top: 8px;
     /* Animation */
     animation: fadeIn 0.4s ease-out;

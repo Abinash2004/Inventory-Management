@@ -6,13 +6,14 @@ function get_dropdown(columnIndex) {
     return { status: 0, message: "collection not found" };
   }
 
+  const col = parseInt(columnIndex, 10);
   const lastRow = sheet.getLastRow();
   if (lastRow < 2) {
     return { status: 1, data: [] };
   }
 
   const values = sheet
-  .getRange(2, columnIndex, lastRow - 1, 1)
+  .getRange(2, col, lastRow - 1, 1)
   .getValues()
   .flat()
   .filter(Boolean);

@@ -7,13 +7,12 @@ export async function loadDropdown(action, selectId, column) {
     const select = document.getElementById(selectId);
     if (!select) return;
 
-    
     let placeholderText = "select";
     const parentDiv = select.closest('div');
     if (parentDiv) {
         const label = parentDiv.querySelector('label');
         if (label) {
-            
+
             const labelText = label.innerText.trim();
             placeholderText = `Select ${labelText}`;
         }
@@ -21,7 +20,6 @@ export async function loadDropdown(action, selectId, column) {
 
     select.innerHTML = `<option value="">${placeholderText}</option>`;
 
-    
     if (!res.data || !Array.isArray(res.data)) return;
 
     res.data.forEach(val => {

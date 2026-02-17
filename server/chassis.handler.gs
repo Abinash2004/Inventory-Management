@@ -1,4 +1,4 @@
-function get_model_color(chassis) {
+function get_model_color_customer(chassis) {
   if (!chassis) {
     return { status: 0, message: "invalid chassis number" };
   }

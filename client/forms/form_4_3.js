@@ -41,11 +41,11 @@ export function render_form_4_3() {
     <div id="form_4_3_response"></div>
   `;
 
-  
+
   loadDropdown("get_dropdown", "chassis", 15);
 
 
-  
+
   const chassisSelect = document.getElementById("chassis");
   chassisSelect.addEventListener("change", async function () {
     const chassis = this.value;
@@ -71,7 +71,7 @@ export function render_form_4_3() {
   });
 
 
-  
+
   document.getElementById("form_4_3").addEventListener("submit", async function (e) {
     e.preventDefault();
 
@@ -81,7 +81,11 @@ export function render_form_4_3() {
     };
 
     const res = await postAction("form_4_3", data);
-    displayResponse("form_4_3_response", res); if(res.status === 1) document.getElementById("form_4_3").reset();
+    displayResponse("form_4_3_response", res);
+    if (res.status === 1) {
+      document.getElementById("form_4_3").reset();
+      loadDropdown("get_dropdown", "chassis", 15);
+    }
   });
 }
 

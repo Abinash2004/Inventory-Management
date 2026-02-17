@@ -21,7 +21,7 @@ const routes = {
     '2.2 - Advance Return Form': render_form_2_2,
     '3.1 - Sale Entry Form': render_form_3_1,
     '3.2 - Sales Account Form': render_form_3_2,
-    '3.3 - Finance Details Form': render_form_3_3,
+    '3.3 - Estimated Disburse Form': render_form_3_3,
     '3.4 - Sale Invoice Form': render_form_3_4,
     '4.1 - Insurance Entry Form': render_form_4_1,
     '4.2 - RTO Entry Form': render_form_4_2,
@@ -95,13 +95,16 @@ function initSidebar() {
         const link = document.createElement("div");
         link.textContent = formName;
 
-        link.onclick = () => {
-            // UI Update: Close mobile sidebar if open
-            if (sidebar.classList.contains("active")) {
+        link.onclick = function () {
+
+            const allLinks = sidebar.querySelectorAll("div");
+            allLinks.forEach(l => l.classList.remove("active"));
+            this.classList.add("active");
+
+            if (sidebar.classList.contains("active") && window.innerWidth <= 900) {
                 sidebar.classList.remove("active");
             }
 
-            // Render Form
             routes[formName]();
 
             const formContainer = document.getElementById("form-container");

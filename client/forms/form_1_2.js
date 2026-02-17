@@ -49,12 +49,12 @@ export function render_form_1_2() {
     <div id="form_1_2_response"></div>
   `;
 
-  
 
-  
+
+
   loadDropdown("get_dropdown", "chassis", 9);
 
-  
+
 
   document
     .getElementById("form_1_2")
@@ -70,7 +70,11 @@ export function render_form_1_2() {
       };
 
       const res = await postAction("form_1_2", data);
-      displayResponse("form_1_2_response", res); if(res.status === 1) document.getElementById("form_1_2").reset();
+      displayResponse("form_1_2_response", res);
+      if (res.status === 1) {
+        document.getElementById("form_1_2").reset();
+        loadDropdown("get_dropdown", "chassis", 9);
+      }
     }
     );
 }

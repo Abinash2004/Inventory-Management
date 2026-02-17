@@ -54,12 +54,12 @@ export function render_form_4_4() {
     <div id="form_4_4_response"></div>
   `;
 
-  
+
   loadDropdown("get_dropdown", "chassis", 16);
   loadDropdown("get_dropdown", "disbursement_account", 6);
 
 
-  
+
   const chassisSelect = document.getElementById("chassis");
   chassisSelect.addEventListener("change", async function () {
     const chassis = this.value;
@@ -85,7 +85,7 @@ export function render_form_4_4() {
   });
 
 
-  
+
   document.getElementById("form_4_4").addEventListener("submit", async function (e) {
     e.preventDefault();
 
@@ -97,7 +97,12 @@ export function render_form_4_4() {
     };
 
     const res = await postAction("form_4_4", data);
-    displayResponse("form_4_4_response", res); if(res.status === 1) document.getElementById("form_4_4").reset();
+    displayResponse("form_4_4_response", res);
+    if (res.status === 1) {
+      document.getElementById("form_4_4").reset();
+      loadDropdown("get_dropdown", "chassis", 16);
+      loadDropdown("get_dropdown", "disbursement_account", 6);
+    }
   });
 }
 

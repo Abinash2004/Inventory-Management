@@ -101,26 +101,12 @@ function addToTimeSheet(formUsed, key, form) {
 //---------------------------------------------------------------------------------------------
 
 function safeWriteRow(sheet, rowIndex, dataObj, map) {
-  const lastCol = sheet.getLastColumn();
-  
-  let maxCol = 0;
-  for (const key in map) {
-    if (map[key] > maxCol) maxCol = map[key];
-  }
-  
-  if (maxCol === 0) return;
-
-  const range = sheet.getRange(rowIndex, 1, 1, maxCol);
-  const values = range.getValues()[0];
-
   for (const key in dataObj) {
     const colIndex = map[key];
     if (colIndex) {
-      values[colIndex - 1] = dataObj[key];
+      sheet.getRange(rowIndex, colIndex).setValue(dataObj[key]);
     }
   }
-  
-  range.setValues([values]);
 }
 
 //---------------------------------------------------------------------------------------------
