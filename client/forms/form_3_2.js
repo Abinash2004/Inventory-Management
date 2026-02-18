@@ -108,9 +108,10 @@ export function render_form_3_2() {
 
         <div>
           <label>Exchange Model</label><br>
-          <select id="exchange_model">
-            <option value="">loading...</option>
-          </select>
+          <input type="text"
+                 id="exchange_model"
+                 pattern="[a-zA-Z0-9 ]+"
+                 title="alphanumeric only">
         </div><br>
 
         <div>
@@ -152,7 +153,7 @@ export function render_form_3_2() {
 
   loadDropdown("get_dropdown", "chassis", 11);
   loadDropdown("get_dropdown", "advancer_name", 7);
-  loadDropdown("get_dropdown", "exchange_model", 1);
+
 
   const chassisSelect = document.getElementById("chassis");
   chassisSelect.addEventListener("change", async function () {
